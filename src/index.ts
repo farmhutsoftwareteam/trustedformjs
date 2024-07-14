@@ -1,3 +1,3 @@
 export { TrustedFormProvider } from './TrustedFormProvider';
 export { useTrustedForm } from './useTrustedForm';
-export * from './types';
+export type { TrustedFormConfig, TrustedFormContextType } from './types';

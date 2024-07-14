@@ -1,7 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { TrustedFormConfig, TrustedFormContextType } from './types';
 
-const defaultConfig: TrustedFormConfig = {
+const defaultConfig: Required<TrustedFormConfig> = {
   scriptSrc: 'https://api.trustedform.com/trustedform.js',
   fieldName: 'xxTrustedFormCertUrl',
   pingFieldName: 'xxTrustedFormPingUrl',
@@ -14,7 +14,7 @@ export const TrustedFormContext = createContext<TrustedFormContextType>({
   error: null,
 });
 
-export const TrustedFormProvider: React.FC<{ config?: TrustedFormConfig; children: React.ReactNode }> = ({ 
+export const TrustedFormProvider: React.FC<{ config?: Partial<TrustedFormConfig>; children: React.ReactNode }> = ({ 
   config = {}, 
   children 
 }) => {
@@ -22,12 +22,11 @@ export const TrustedFormProvider: React.FC<{ config?: TrustedFormConfig; childre
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
-  const mergedConfig = { ...defaultConfig, ...config };
+  const mergedConfig: Required<TrustedFormConfig> = { ...defaultConfig, ...config };
 
   useEffect(() => {
     const script = document.createElement('script');
-    script.src = mergedConfig.scriptSrc ?? defaultConfig.scriptSrc;
-
+    script.src = mergedConfig.scriptSrc;
     script.async = true;
     script.onerror = () => {
       setError(new Error('Failed to load TrustedForm script'));
